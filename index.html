@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA Explorer</title>
+  </head>
+  <style>
+    body {
+      font-family: monospace;
+      margin: 8px;
+    }
+
+    #controls_row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    /* The kernel cells are in a 3x3 grid */
+    #kernel_grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+  </style>
+  <body>
+    <canvas id="ca_canvas" data></canvas>
+    <div id="controls_row">
+      <div id="spliner_parent"></div>
+      <div id="kernel_grid" data></div>
+
+      <label>Size:
+        <select id="grid_size" data>
+          <option value="256">256</option>
+          <option value="512" selected>512</option>
+          <option value="1024">1024</option>
+        </select>
+
+        <label>Speed:
+          <input type="range" id="speed" data min="1" max="16" value="4">
+        </label>
+
+        FPS: <span id="fps" data>0</span>
+      </label>
+    </div>
+  </body>
+  <!-- I would've yoinked from my prior code in a graphics class for spline code, but this library does exist sooo -->
+  <script src="dist/CanvasSpliner.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // If I forget to remove this, this was just so I could get hot-reloading during development.
+    (new WebSocket(`ws://${location.host}/ws`)).onmessage = (event) => {
+      if (event.data === "reload") location.reload();
+    };
+  </script>
+</html>
